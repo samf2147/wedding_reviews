@@ -3,14 +3,12 @@ from reviews import Venue, Review, VenueList
 
 class ReviewTests(unittest.TestCase):
     def setUp(self):
-        self.venue_one = Venue(name='Surf Club')
-        self.venue_two = Venue(name=u'Greentree')
+        self.venue_list = VenueList()
+        self.venue_one = Venue(name='Surf Club', venue_list=self.venue_list)
+        self.venue_two = Venue(name=u'Greentree', venue_list=self.venue_list)
         self.review_one = Review(venue = self.venue_one, cost = 10000.00, num_guests = 200)
         self.review_two = Review(venue = self.venue_one, cost = 20000.00, num_guests = 500)
         self.review_three = Review(venue = self.venue_two, cost = 20000.00, num_guests=30.5)
-        self.venue_list = VenueList()
-        self.venue_list.add(self.venue_one)
-        self.venue_list.add(self.venue_two)
         
     
     def test_venue_constructors(self):
@@ -42,6 +40,13 @@ class ReviewTests(unittest.TestCase):
         #check that creating the revue adds it to the venue's list
         self.assertTrue(self.review_one in self.venue_one.review_list)
         self.assertTrue(self.review_three not in self.venue_one.review_list)
+        self.assertEqual(len(self.venue_one.review_list),2)
+        
+        #prevent duplicate reviews
+        duplicate_result = self.venue_one.add_review(self.review_one)
+        self.assertEqual(len(self.venue_one.review_list),2)
+        self.assertFalse(duplicate_result)
+        
     
     def test_update_review(self):
         self.review_two.update_cost(15000.00)
@@ -59,7 +64,7 @@ class ReviewTests(unittest.TestCase):
         self.assertTrue(self.venue_list.get_venue('surF cLub') is self.venue_one)
         self.assertTrue(self.venue_list.get_venue(u'Surf Club') is self.venue_one)
         
-        self.assertRaises(KeyError, self.venue_list.get_venue, 'not a real venue')
+        self.assertTrue(self.venue_list.get_venue('not a real venue') is None)
 
         
         

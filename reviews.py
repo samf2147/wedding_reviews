@@ -1,12 +1,26 @@
 class Venue:
     def __init__(self, **kwargs):
         name = kwargs['name']
-        if isinstance(name, basestring):
-            self.name = kwargs['name']
-        else:
-            raise TypeError('Did not pass string for venue name')
+        self.update_name(name)
         
         self.review_list = []
+        
+        #Add venue to the list of venues
+        if 'venue_list' in kwargs:
+            kwargs['venue_list'].add(self)
+    
+    def update_name(self, name):
+        if isinstance(name, basestring):
+            self.name = name
+        else:
+            raise TypeError('Did not pass string for venue name')
+    
+    def add_review(self, review):
+        if review not in self.review_list:
+            self.review_list.append(review)
+            return True
+        else:
+            return False
 
 class Review:
     def __init__(self, **kwargs):
@@ -17,14 +31,7 @@ class Review:
         
         self.update_cost(cost)
         self.update_num_guests(num_guests)
-        
-        if isinstance(venue, Venue):
-            self.venue = venue
-        else:
-            raise TypeError('Did not pass Venue subclass as venue parameter')
-        
-        #when review is created, add it to its venue's review list
-        venue.review_list.append(self)
+        self.update_venue(venue)
     
     def update_venue(self, venue):
         '''
@@ -36,6 +43,7 @@ class Review:
             raise TypeError('Did not pass Venue subclass as venue parameter')
         else:
             self.venue = venue
+            venue.add_review(self)
             
         
     
@@ -78,7 +86,7 @@ class VenueList:
             if venue.name.lower() == venue_name:
                 return venue
         
-        raise KeyError('Venue not found.')
+        return None
 
 
         
