@@ -1,5 +1,11 @@
 class Venue:
     def __init__(self, **kwargs):
+        '''
+        Construct a Venue object
+        
+        Required parameters: name (a string)
+        Will throw KeyError without the name parameters
+        '''
         name = kwargs['name']
         self.update_name(name)
         
@@ -21,9 +27,31 @@ class Venue:
             return True
         else:
             return False
+    
+    def calculate_average_cost(self):
+        '''
+        Calculate the average cost from all the venue's reviews
+        
+        Returns None if there are no reviews
+        '''
+        if len(self.review_list) == 0:
+            return None
+        else:
+            #calculate sum using generator that gets the costs of each review
+            return float(sum((review.cost for review in self.review_list)))/len(self.review_list)
 
 class Review:
     def __init__(self, **kwargs):
+        '''
+        Construct a Review object
+        
+        Required parameters:
+        venue (a string)
+        cost (a number)
+        num_guests (prefereably an int - will be cast as an int)
+        
+        Will throw a KeyError without these parameters
+        '''
         #venue must be a subclass of Venue
         venue = kwargs['venue']
         cost = kwargs['cost']
@@ -70,6 +98,10 @@ class Review:
 
 class VenueList:
     def __init__(self):
+        '''
+        Construct a VenueList object
+        No parameters necessary
+        '''
         self._venue_list = []
     
     def add(self,venue):

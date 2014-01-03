@@ -65,6 +65,11 @@ class ReviewTests(unittest.TestCase):
         self.assertTrue(self.venue_list.get_venue(u'Surf Club') is self.venue_one)
         
         self.assertTrue(self.venue_list.get_venue('not a real venue') is None)
+    
+    def test_venue_average_cost(self):
+        self.assertAlmostEqual(self.venue_one.calculate_average_cost(), 15000.00)
+        self.dummy_venue = Venue(name='Fake venue')
+        self.assertEqual(self.dummy_venue.calculate_average_cost(), None)
 
         
         
