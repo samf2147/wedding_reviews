@@ -70,6 +70,14 @@ class ReviewTests(unittest.TestCase):
         self.assertAlmostEqual(self.venue_one.calculate_average_cost(), 15000.00)
         self.dummy_venue = Venue(name='Fake venue')
         self.assertEqual(self.dummy_venue.calculate_average_cost(), None)
+    
+    def test_get_venues(self):
+        full_list = self.venue_list.get_venues()
+        self.assertTrue(len(full_list) == 2)
+        
+        name_filter = lambda x : x.name == 'Surf Club'
+        surf_club_list = self.venue_list.get_venues(venue_filter=name_filter)
+        self.assertTrue(len(surf_club_list) == 1 and surf_club_list[0] is self.venue_one)
 
         
         

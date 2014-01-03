@@ -40,6 +40,7 @@ class Venue:
             #calculate sum using generator that gets the costs of each review
             return float(sum((review.cost for review in self.review_list)))/len(self.review_list)
 
+
 class Review:
     def __init__(self, **kwargs):
         '''
@@ -72,9 +73,7 @@ class Review:
         else:
             self.venue = venue
             venue.add_review(self)
-            
-        
-    
+              
     def update_cost(self, cost):
         '''
         Update the cost attribute
@@ -96,6 +95,7 @@ class Review:
         else:
             raise ValueError('num_guests must be greater than 0')
 
+
 class VenueList:
     def __init__(self):
         '''
@@ -116,9 +116,15 @@ class VenueList:
         venue_name = venue_name.lower()
         for venue in self._venue_list:
             if venue.name.lower() == venue_name:
-                return venue
-        
+                return venue     
         return None
+    
+    def get_venues(self, venue_filter=None):
+        '''
+        Get all venues that evaluate to True with the given filter
+        If no filter given, return the entire list of venues.
+        '''
+        return filter(venue_filter,self._venue_list)
 
 
         
