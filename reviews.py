@@ -60,5 +60,25 @@ class Review:
         else:
             raise ValueError('num_guests must be greater than 0')
 
+class VenueList:
+    def __init__(self):
+        self._venue_list = []
+    
+    def add(self,venue):
+        '''Add venue to list of venues'''
+        self._venue_list.append(venue)
+    
+    def get_venue(self, venue_name):
+        '''
+        Get the venue with the same name as the venue_name parameter
+        If there is none, throw Key Error
+        '''
+        venue_name = venue_name.lower()
+        for venue in self._venue_list:
+            if venue.name.lower() == venue_name:
+                return venue
+        
+        raise KeyError('Venue not found.')
+
 
         

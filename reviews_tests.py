@@ -1,5 +1,5 @@
 import unittest
-from reviews import Venue, Review
+from reviews import Venue, Review, VenueList
 
 class ReviewTests(unittest.TestCase):
     def setUp(self):
@@ -8,6 +8,9 @@ class ReviewTests(unittest.TestCase):
         self.review_one = Review(venue = self.venue_one, cost = 10000.00, num_guests = 200)
         self.review_two = Review(venue = self.venue_one, cost = 20000.00, num_guests = 500)
         self.review_three = Review(venue = self.venue_two, cost = 20000.00, num_guests=30.5)
+        self.venue_list = VenueList()
+        self.venue_list.add(self.venue_one)
+        self.venue_list.add(self.venue_two)
         
     
     def test_venue_constructors(self):
@@ -50,6 +53,13 @@ class ReviewTests(unittest.TestCase):
         #review_three is the only review for venue 2
         update_venue_result = self.review_three.update_venue(self.venue_one)
         self.assertTrue(self.review_three.venue is self.venue_one)
+    
+    def test_venue_list(self):
+        self.assertTrue(self.venue_list.get_venue('Surf Club') is self.venue_one)
+        self.assertTrue(self.venue_list.get_venue('surF cLub') is self.venue_one)
+        self.assertTrue(self.venue_list.get_venue(u'Surf Club') is self.venue_one)
+        
+        self.assertRaises(KeyError, self.venue_list.get_venue, 'not a real venue')
 
         
         
