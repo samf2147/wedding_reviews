@@ -1,3 +1,5 @@
+__all__ = ['Venue', 'Review', 'VenueList']
+
 class Venue:
     def __init__(self, **kwargs):
         '''

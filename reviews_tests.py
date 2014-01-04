@@ -1,5 +1,5 @@
 import unittest
-from reviews import Venue, Review, VenueList
+from reviews import *
 
 class ReviewTests(unittest.TestCase):
     def setUp(self):
