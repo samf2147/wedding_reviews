@@ -111,7 +111,7 @@ class VenueList:
     def get_venue(self, venue_name):
         '''
         Get the venue with the same name as the venue_name parameter
-        If there is none, throw Key Error
+        If there is none, return None
         '''
         venue_name = venue_name.lower()
         for venue in self._venue_list:
