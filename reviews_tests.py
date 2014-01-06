@@ -1,11 +1,10 @@
 import unittest
-from reviews import Venue, Review, VenueList
+from reviews import Venue, Review
 
 class ReviewTests(unittest.TestCase):
     def setUp(self):
-        self.venue_list = VenueList()
-        self.venue_one = Venue(name='Surf Club', venue_list=self.venue_list)
-        self.venue_two = Venue(name=u'Greentree', venue_list=self.venue_list)
+        self.venue_one = Venue(name='Surf Club')
+        self.venue_two = Venue(name=u'Greentree')
         self.review_one = Review(venue = self.venue_one, cost = 10000.00, num_guests = 200)
         self.review_two = Review(venue = self.venue_one, cost = 20000.00, num_guests = 500)
         self.review_three = Review(venue = self.venue_two, cost = 20000.00, num_guests=30.5)
@@ -38,14 +37,13 @@ class ReviewTests(unittest.TestCase):
     
     def test_review_in_venue_list(self):
         #check that creating the revue adds it to the venue's list
-        self.assertTrue(self.review_one in self.venue_one.review_list)
-        self.assertTrue(self.review_three not in self.venue_one.review_list)
-        self.assertEqual(len(self.venue_one.review_list),2)
+        self.assertTrue(self.review_one in self.venue_one.reviews)
+        self.assertTrue(self.review_three not in self.venue_one.reviews)
+        self.assertEqual(len(self.venue_one.reviews),2)
         
         #prevent duplicate reviews
-        duplicate_result = self.venue_one.add_review(self.review_one)
-        self.assertEqual(len(self.venue_one.review_list),2)
-        self.assertFalse(duplicate_result)
+        self.venue_one.add_review(self.review_one)
+        self.assertEqual(len(self.venue_one.reviews),2)
         
     
     def test_set_review(self):
@@ -59,25 +57,12 @@ class ReviewTests(unittest.TestCase):
         set_venue_result = self.review_three.set_venue(self.venue_one)
         self.assertTrue(self.review_three.venue is self.venue_one)
     
-    def test_venue_list(self):
-        self.assertTrue(self.venue_list.get_venue('Surf Club') is self.venue_one)
-        self.assertTrue(self.venue_list.get_venue('surF cLub') is self.venue_one)
-        self.assertTrue(self.venue_list.get_venue(u'Surf Club') is self.venue_one)
-        
-        self.assertTrue(self.venue_list.get_venue('not a real venue') is None)
     
     def test_venue_average_cost(self):
         self.assertAlmostEqual(self.venue_one.calculate_average_cost(), 15000.00)
         self.dummy_venue = Venue(name='Fake venue')
         self.assertEqual(self.dummy_venue.calculate_average_cost(), None)
-    
-    def test_get_venues(self):
-        full_list = self.venue_list.get_venues()
-        self.assertTrue(len(full_list) == 2)
-        
-        name_filter = lambda x : x.name == 'Surf Club'
-        surf_club_list = self.venue_list.get_venues(venue_filter=name_filter)
-        self.assertTrue(len(surf_club_list) == 1 and surf_club_list[0] is self.venue_one)
+
 
         
         

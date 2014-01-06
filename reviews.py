@@ -9,12 +9,8 @@ class Venue:
         '''
         
         self.set_name(name)
-        
-        self.review_list = []
-        
-        #Add venue to the list of venues
-        if 'venue_list' in kwargs:
-            kwargs['venue_list'].add(self)
+        self.reviews = set()
+
     
     def set_name(self, name):
         if isinstance(name, basestring):
@@ -23,11 +19,7 @@ class Venue:
             raise TypeError('Did not pass string for venue name')
     
     def add_review(self, review):
-        if review not in self.review_list:
-            self.review_list.append(review)
-            return True
-        else:
-            return False
+        self.reviews.add(review)
     
     def calculate_average_cost(self):
         '''
@@ -35,15 +27,15 @@ class Venue:
         
         Returns None if there are no reviews
         '''
-        if len(self.review_list) == 0:
+        if len(self.reviews) == 0:
             return None
         else:
             #calculate sum using generator that gets the costs of each review
-            return float(sum((review.cost for review in self.review_list)))/len(self.review_list)
+            return float(sum((review.cost for review in self.reviews)))/len(self.reviews)
 
 
 class Review:
-    def __init__(self, **kwargs):
+    def __init__(self, venue, cost, num_guests):
         '''
         Construct a Review object
         
@@ -54,11 +46,7 @@ class Review:
         
         Will throw a KeyError without these parameters
         '''
-        #venue must be a subclass of Venue
-        venue = kwargs['venue']
-        cost = kwargs['cost']
-        num_guests = kwargs['num_guests']
-        
+        #venue must be a subclass of Venue        
         self.set_cost(cost)
         self.set_num_guests(num_guests)
         self.set_venue(venue)
@@ -95,37 +83,6 @@ class Review:
             self.num_guests = num_guests
         else:
             raise ValueError('num_guests must be greater than 0')
-
-
-class VenueList:
-    def __init__(self):
-        '''
-        Construct a VenueList object
-        No parameters necessary
-        '''
-        self._venue_list = set()
-    
-    def add(self,venue):
-        '''Add venue to list of venues'''
-        self._venue_list.add(venue)
-    
-    def get_venue(self, venue_name):
-        '''
-        Get the venue with the same name as the venue_name parameter
-        If there is none, return None
-        '''
-        venue_name = venue_name.lower()
-        for venue in self._venue_list:
-            if venue.name.lower() == venue_name:
-                return venue     
-        return None
-    
-    def get_venues(self, venue_filter=None):
-        '''
-        Get all venues that evaluate to True with the given filter
-        If no filter given, return the entire list of venues.
-        '''
-        return filter(venue_filter,self._venue_list)
 
 
         
