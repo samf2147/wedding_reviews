@@ -1,5 +1,5 @@
 import unittest
-from reviews import *
+from reviews import Venue, Review, VenueList
 
 class ReviewTests(unittest.TestCase):
     def setUp(self):
@@ -48,15 +48,15 @@ class ReviewTests(unittest.TestCase):
         self.assertFalse(duplicate_result)
         
     
-    def test_update_review(self):
-        self.review_two.update_cost(15000.00)
+    def test_set_review(self):
+        self.review_two.set_cost(15000.00)
         self.assertEqual(self.review_two.cost, 15000.00)
         
-        self.review_two.update_num_guests(160)
+        self.review_two.set_num_guests(160)
         self.assertEqual(self.review_two.num_guests,160)
         
         #review_three is the only review for venue 2
-        update_venue_result = self.review_three.update_venue(self.venue_one)
+        set_venue_result = self.review_three.set_venue(self.venue_one)
         self.assertTrue(self.review_three.venue is self.venue_one)
     
     def test_venue_list(self):

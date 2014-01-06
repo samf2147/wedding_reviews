@@ -1,15 +1,14 @@
-__all__ = ['Venue', 'Review', 'VenueList']
+__all__ = ['Venue', 'Review']
 
 class Venue:
-    def __init__(self, **kwargs):
+    def __init__(self, name, **kwargs):
         '''
         Construct a Venue object
         
         Required parameters: name (a string)
-        Will throw KeyError without the name parameters
         '''
-        name = kwargs['name']
-        self.update_name(name)
+        
+        self.set_name(name)
         
         self.review_list = []
         
@@ -17,7 +16,7 @@ class Venue:
         if 'venue_list' in kwargs:
             kwargs['venue_list'].add(self)
     
-    def update_name(self, name):
+    def set_name(self, name):
         if isinstance(name, basestring):
             self.name = name
         else:
@@ -60,11 +59,11 @@ class Review:
         cost = kwargs['cost']
         num_guests = kwargs['num_guests']
         
-        self.update_cost(cost)
-        self.update_num_guests(num_guests)
-        self.update_venue(venue)
+        self.set_cost(cost)
+        self.set_num_guests(num_guests)
+        self.set_venue(venue)
     
-    def update_venue(self, venue):
+    def set_venue(self, venue):
         '''
         Update the venue of the review object
         Throws TypeError if it's not passed a Venue object
@@ -76,7 +75,7 @@ class Review:
             self.venue = venue
             venue.add_review(self)
               
-    def update_cost(self, cost):
+    def set_cost(self, cost):
         '''
         Update the cost attribute
         Throw ValueError if cost is less than or equal to 0
@@ -86,7 +85,7 @@ class Review:
         else:
             raise ValueError('cost must be greater than 0')
     
-    def update_num_guests(self, num_guests):
+    def set_num_guests(self, num_guests):
         '''
         Update the number of guests
         Throw ValueError if number of guests is less than or equal to 0
@@ -104,11 +103,11 @@ class VenueList:
         Construct a VenueList object
         No parameters necessary
         '''
-        self._venue_list = []
+        self._venue_list = set()
     
     def add(self,venue):
         '''Add venue to list of venues'''
-        self._venue_list.append(venue)
+        self._venue_list.add(venue)
     
     def get_venue(self, venue_name):
         '''
